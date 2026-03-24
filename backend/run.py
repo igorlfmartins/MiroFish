@@ -32,19 +32,19 @@ def main():
             print(f"  - {err}")
         print("\n请检查 .env 文件中的配置")
         sys.exit(1)
-    
+
     # 创建应用
     app = create_app()
-    
+
     # 获取运行配置
+    # Railway 注入 PORT 环境变量；本地开发回退到 FLASK_PORT（默认 5001）
     host = os.environ.get('FLASK_HOST', '0.0.0.0')
-    port = int(os.environ.get('FLASK_PORT', 5001))
+    port = int(os.environ.get('PORT', os.environ.get('FLASK_PORT', 5001)))
     debug = Config.DEBUG
-    
+
     # 启动服务
     app.run(host=host, port=port, debug=debug, threaded=True)
 
 
 if __name__ == '__main__':
     main()
-
