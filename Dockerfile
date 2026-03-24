@@ -33,7 +33,7 @@ EXPOSE 8080
 # Servidor de produção com gunicorn (usa PORT do Railway ou 8080 como fallback)
 CMD uv run --directory backend gunicorn \
     --bind "0.0.0.0:${PORT:-8080}" \
-    --workers 2 \
-    --threads 4 \
+    --workers 1 \
+    --threads 8 \
     --timeout 120 \
     wsgi:app
