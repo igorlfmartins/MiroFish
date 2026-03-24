@@ -28,12 +28,11 @@ COPY . .
 # 构建前端静态文件
 RUN cd frontend && npm run build
 
+# Porta padrão — Railway sobrescreve com a variável PORT em runtime
+ENV PORT=8080
 EXPOSE 8080
 
-# Servidor de produção com gunicorn (usa PORT do Railway ou 8080 como fallback)
-CMD uv run --directory backend gunicorn \
-    --bind "0.0.0.0:${PORT:-8080}" \
-    --workers 1 \
-    --threads 8 \
-    --timeout 120 \
-    wsgi:app
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+CMD ["/start.sh"]

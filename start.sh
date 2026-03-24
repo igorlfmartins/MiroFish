@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+echo "=== MiroFish starting ==="
+echo "PORT=${PORT}"
+echo "PWD=$(pwd)"
+
+exec uv run --directory /app/backend gunicorn \
+    --bind "0.0.0.0:${PORT}" \
+    --workers 1 \
+    --threads 8 \
+    --timeout 120 \
+    wsgi:app
