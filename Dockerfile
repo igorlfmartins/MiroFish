@@ -26,7 +26,12 @@ COPY . .
 # 构建前端静态文件
 RUN cd frontend && npm run build
 
-EXPOSE 5001
+EXPOSE 8080
 
-# 仅启动后端（Flask 同时提供 API 和前端静态文件）
-CMD ["uv", "run", "--directory", "backend", "python", "run.py"]
+# Servidor de produção com gunicorn (usa PORT do Railway ou 8080 como fallback)
+CMD uv run --directory backend gunicorn \
+    --bind "0.0.0.0:${PORT:-8080}" \
+    --workers 2 \
+    --threads 4 \
+    --timeout 120 \
+    wsgi:app
